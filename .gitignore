@@ -16,6 +16,8 @@ ios/
 
 # Local Secrets
 android/app/src/main/res/values/secrets.xml
+HowToRun.txt
+UsefulCommands.txt
 
 # System files
 .DS_Store
