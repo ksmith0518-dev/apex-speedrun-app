@@ -14,6 +14,9 @@ web-build/
 android/
 ios/
 
+# Local Secrets
+android/app/src/main/res/values/secrets.xml
+
 # System files
 .DS_Store
 
