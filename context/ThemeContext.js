@@ -1,5 +1,6 @@
+// contexts/ThemeContext.js
 import React, { createContext, useState, useContext } from 'react';
-import { DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme } from '@react-navigation/native';
+import { DefaultTheme, DarkTheme } from '@react-navigation/native';
 
 const ThemeContext = createContext();
 
@@ -8,10 +9,10 @@ export const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => setIsDark(prev => !prev);
 
-  const theme = isDark ? NavigationDarkTheme : NavigationDefaultTheme;
+  const theme = isDark ? DarkTheme : DefaultTheme;
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme, theme }}>
+    <ThemeContext.Provider value={{ theme, isDark, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

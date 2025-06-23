@@ -1,11 +1,9 @@
-// SettingsScreen.js
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { ThemeContext } from '../context/ThemeContext';
 
 const SettingsScreen = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  const isDark = theme === 'dark';
+  const { isDark, toggleTheme } = useContext(ThemeContext);
 
   const handlePress = (label) => {
     console.log(`${label} pressed`);
@@ -18,31 +16,31 @@ const SettingsScreen = () => {
     container: {
       flex: 1,
       padding: 20,
-      backgroundColor: isDark ? '#121212' : '#ffffff'
+      backgroundColor: isDark ? '#121212' : '#ffffff',
     },
     title: {
       fontSize: 24,
       fontWeight: 'bold',
       marginBottom: 20,
       textAlign: 'center',
-      color: isDark ? '#ffffff' : '#000000'
+      color: isDark ? '#ffffff' : '#000000',
     },
     sectionHeader: {
       fontSize: 18,
       fontWeight: '600',
       marginTop: 20,
       marginBottom: 10,
-      color: isDark ? '#cccccc' : '#444444'
+      color: isDark ? '#cccccc' : '#444444',
     },
     item: {
       paddingVertical: 12,
       borderBottomWidth: 1,
-      borderBottomColor: isDark ? '#333333' : '#eeeeee'
+      borderBottomColor: isDark ? '#333333' : '#eeeeee',
     },
     itemText: {
       fontSize: 16,
-      color: isDark ? '#dddddd' : '#000000'
-    }
+      color: isDark ? '#dddddd' : '#000000',
+    },
   });
 
   return (
