@@ -1,5 +1,11 @@
 {
-  "android": {
-    "package": "com.anonymous.apexspeedrunapp"
+  "expo": {
+    "name": "Apex Speedrun",
+    "slug": "apex-speedrun-app",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.anonymous.apexspeedrunapp"
+    },
+    "assetBundlePatterns": ["assets/*"]
   }
 }

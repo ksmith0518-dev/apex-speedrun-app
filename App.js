@@ -12,6 +12,15 @@ import Profile from './screens/ProfileScreen.js';
 
 const Tab = createBottomTabNavigator();
 
+const Main = () => {
+  const { theme } = useThemeContext();
+  return (
+    <NavigationContainer theme={theme}>
+      <TabNavigator />
+    </NavigationContainer>
+  );
+};
+
 export default function App() {
   const [routes, setRoutes] = useState([]);
 
