@@ -4,10 +4,12 @@ import { View, Text, StyleSheet, Image, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { useThemeContext } from '../context/ThemeContext';
 
 const ProfileScreen = () => {
   const [profileImage, setProfileImage] = useState(null);
   const navigation = useNavigation();
+  const { isDark } = useThemeContext();
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -23,7 +25,7 @@ const ProfileScreen = () => {
   };
 
   const openSettings = () => {
-    console.log("Settings icon pressed");
+    navigation.navigate('Settings');
   };
 
   useLayoutEffect(() => {
@@ -34,13 +36,56 @@ const ProfileScreen = () => {
         <Ionicons
           name="settings-outline"
           size={24}
-          color="black"
+          color={isDark ? 'white' : 'black'}
           style={{ marginRight: 15 }}
           onPress={openSettings}
         />
       ),
     });
-  }, [navigation]);
+  }, [navigation, isDark]);
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      alignItems: 'center',
+      backgroundColor: isDark ? '#121212' : '#fff',
+    },
+    profileSection: {
+      alignItems: 'center',
+      marginBottom: 30,
+    },
+    profileImage: {
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      marginBottom: 10,
+      backgroundColor: '#ccc',
+    },
+    username: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginTop: 10,
+      textAlign: 'center',
+      color: isDark ? '#fff' : '#000',
+    },
+    statsSection: {
+      alignItems: 'center',
+    },
+    statLabel: {
+      fontSize: 16,
+      fontWeight: '600',
+      marginTop: 10,
+      textAlign: 'center',
+      color: isDark ? '#ccc' : '#222',
+    },
+    statValue: {
+      fontSize: 16,
+      marginBottom: 5,
+      textAlign: 'center',
+      color: isDark ? '#eee' : '#000',
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -72,45 +117,5 @@ const ProfileScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: '#fff'
-  },
-  profileSection: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 10,
-    backgroundColor: '#eee'
-  },
-  username: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 10,
-    textAlign: 'center'
-  },
-  statsSection: {
-    alignItems: 'center'
-  },
-  statLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginTop: 10,
-    textAlign: 'center'
-  },
-  statValue: {
-    fontSize: 16,
-    marginBottom: 5,
-    textAlign: 'center'
-  },
-});
 
 export default ProfileScreen;

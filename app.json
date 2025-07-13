@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.ksmith0518.apexspeedrun"
+      "package": "com.ksmith0518.apexspeedrun", 
     },
     "web": {
       "favicon": "./assets/favicon.png"

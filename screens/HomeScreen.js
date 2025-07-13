@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
+import { useThemeContext } from '../context/ThemeContext';
 
 const Home = ({ routes, setRoutes }) => {
   const [search, setSearch] = useState('');
@@ -19,6 +20,8 @@ const Home = ({ routes, setRoutes }) => {
     startLat: '',
     startLng: ''
   });
+
+  const { isDark } = useThemeContext();
 
   const handleAddRoute = () => {
     const route = {
@@ -35,11 +38,71 @@ const Home = ({ routes, setRoutes }) => {
     setModalVisible(false);
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: isDark ? '#121212' : 'white',
+    },
+    searchBar: {
+      borderWidth: 1,
+      borderColor: isDark ? '#444' : '#ccc',
+      borderRadius: 8,
+      padding: 10,
+      marginBottom: 20,
+      color: isDark ? '#fff' : '#000',
+      backgroundColor: isDark ? '#1e1e1e' : '#fff',
+    },
+    title: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: isDark ? '#fff' : '#000',
+    },
+    routeCard: {
+      backgroundColor: isDark ? '#2a2a2a' : '#f0f0f0',
+      padding: 12,
+      borderRadius: 8,
+      marginBottom: 10,
+    },
+    routeTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: isDark ? '#fff' : '#000',
+    },
+    addButton: {
+      backgroundColor: '#1e90ff',
+      padding: 12,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 20,
+    },
+    addButtonText: {
+      color: 'white',
+      fontSize: 16,
+    },
+    modalContent: {
+      flex: 1,
+      padding: 20,
+      justifyContent: 'center',
+      backgroundColor: isDark ? '#121212' : '#fff',
+    },
+    input: {
+      borderBottomWidth: 1,
+      borderBottomColor: isDark ? '#555' : '#ccc',
+      padding: 10,
+      marginVertical: 8,
+      color: isDark ? '#fff' : '#000',
+      backgroundColor: isDark ? '#1e1e1e' : '#fff',
+    }
+  });
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.searchBar}
         placeholder="Search routes or users..."
+        placeholderTextColor={isDark ? '#888' : '#999'}
         value={search}
         onChangeText={setSearch}
       />
@@ -69,12 +132,14 @@ const Home = ({ routes, setRoutes }) => {
         <View style={styles.modalContent}>
           <TextInput
             placeholder="Route Name"
+            placeholderTextColor={isDark ? '#888' : '#999'}
             style={styles.input}
             value={newRoute.name}
             onChangeText={text => setNewRoute({ ...newRoute, name: text })}
           />
           <TextInput
             placeholder="Start Latitude"
+            placeholderTextColor={isDark ? '#888' : '#999'}
             style={styles.input}
             keyboardType="numeric"
             value={newRoute.startLat}
@@ -82,6 +147,7 @@ const Home = ({ routes, setRoutes }) => {
           />
           <TextInput
             placeholder="Start Longitude"
+            placeholderTextColor={isDark ? '#888' : '#999'}
             style={styles.input}
             keyboardType="numeric"
             value={newRoute.startLng}
@@ -94,56 +160,5 @@ const Home = ({ routes, setRoutes }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: 'white'
-  },
-  searchBar: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 20
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10
-  },
-  routeCard: {
-    backgroundColor: '#f0f0f0',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 10
-  },
-  routeTitle: {
-    fontSize: 16,
-    fontWeight: 'bold'
-  },
-  addButton: {
-    backgroundColor: '#1e90ff',
-    padding: 12,
-    borderRadius: 10,
-    alignItems: 'center',
-    marginTop: 20
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16
-  },
-  modalContent: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center'
-  },
-  input: {
-    borderBottomWidth: 1,
-    padding: 10,
-    marginVertical: 8
-  }
-});
 
 export default Home;
