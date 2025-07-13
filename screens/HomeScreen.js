@@ -1,4 +1,3 @@
-// screens/HomeScreen.js
 import React, { useState } from 'react';
 import {
   View,
@@ -11,6 +10,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { useThemeContext } from '../context/ThemeContext';
+import { useNavigation } from '@react-navigation/native'; // ✅ Add this
 
 const Home = ({ routes, setRoutes }) => {
   const [search, setSearch] = useState('');
@@ -22,6 +22,7 @@ const Home = ({ routes, setRoutes }) => {
   });
 
   const { isDark } = useThemeContext();
+  const navigation = useNavigation(); // ✅ Get navigation object
 
   const handleAddRoute = () => {
     const route = {
@@ -115,9 +116,13 @@ const Home = ({ routes, setRoutes }) => {
         )}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <View style={styles.routeCard}>
+          <TouchableOpacity
+            style={styles.routeCard}
+            onPress={() => navigation.navigate('CourseDetail', { course: item })} // ✅ Tap navigation
+          >
             <Text style={styles.routeTitle}>{item.name}</Text>
-          </View>
+            {item.city && <Text style={{ color: isDark ? '#ccc' : '#333' }}>{item.city}, {item.state}</Text>}
+          </TouchableOpacity>
         )}
       />
 
