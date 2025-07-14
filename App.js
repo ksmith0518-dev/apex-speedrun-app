@@ -11,15 +11,14 @@ import MapScreen from './screens/MapScreen';
 import Leaderboard from './screens/LeaderboardScreen';
 import Profile from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import CourseDetailScreen from './screens/CourseDetailScreen'; 
-
+import CourseDetailScreen from './screens/CourseDetailScreen';
 
 import { ThemeProvider, useThemeContext } from './context/ThemeContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-// Bottom tab navigation (Home, Map, Leaderboard, Profile)
+// Bottom Tab Navigator
 const TabNavigator = ({ routes, setRoutes }) => (
   <Tab.Navigator
     screenOptions={({ route }) => ({
@@ -46,7 +45,7 @@ const TabNavigator = ({ routes, setRoutes }) => (
   </Tab.Navigator>
 );
 
-// Stack navigation wraps the tabs + extra screens like Settings
+// Stack Navigator
 const Main = ({ routes, setRoutes }) => {
   const { theme, isDark } = useThemeContext();
 
@@ -58,16 +57,18 @@ const Main = ({ routes, setRoutes }) => {
       />
       <NavigationContainer theme={theme}>
         <Stack.Navigator>
-          {/* This is your tab bar at the root */}
           <Stack.Screen name="MainTabs" options={{ headerShown: false }}>
             {() => <TabNavigator routes={routes} setRoutes={setRoutes} />}
           </Stack.Screen>
-
-          {/* Add your course detail screen here */}
           <Stack.Screen
             name="CourseDetail"
             component={CourseDetailScreen}
             options={{ title: 'Course Details' }}
+          />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{ title: 'Settings' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -75,36 +76,47 @@ const Main = ({ routes, setRoutes }) => {
   );
 };
 
-
-const defaultRoutes = [
-  {
-    id: '67',
-    name: 'NELSON-SHELL',
-    type: 'Campus',
-    city: 'Atlanta',
-    state: 'Georgia',
-    country: 'USA',
-    rating: 'Blue+',
-    topMale: 'Joey Jepsen',
-    topMaleTime: '22.26',
-    topMaleDate: '2024-10-20',
-    topFemale: 'Taylor Carpenter',
-    topFemaleTime: '35.56',
-    topFemaleDate: '2024-10-20',
-    deviationSec: '13.30',
-    deviationPct: '37.40',
-    lengthM: 75.00,
-    avgSpeed: 3.37,
-    location: '33.77831, -84.40532',
-    dateSet: '2024-10-20',
-    googleMaps: 'https://www.google.com/maps?q=33.77831,-84.40532',
-    setters: 'Joey Jepsen, Olof Wood, Taylor Carpenter, Max Calderon, Austin Scott, Ryan Ford',
-    accepted: false
-  }
-];
-
+// Default route must be set *inside* the App component
 export default function App() {
-  const [routes, setRoutes] = useState([]);
+  const [routes, setRoutes] = useState([
+    {
+      id: 'course-67',
+      name: 'NELSON-SHELL',
+      rating: 67,
+      type: 'Campus',
+      city: 'Atlanta',
+      state: 'Georgia',
+      country: 'USA',
+      topMale: {
+        name: 'Joey Jepsen',
+        time: 22.26,
+        date: '2024-10-20',
+      },
+      topFemale: {
+        name: 'Taylor Carpenter',
+        time: 35.56,
+        date: '2024-10-20',
+      },
+      timeDiffSeconds: 13.30,
+      timeDiffPercent: 37.4,
+      lengthMeters: 75.0,
+      avgSpeed: 3.37,
+      location: {
+        latitude: 33.77831,
+        longitude: -84.40532,
+      },
+      dateSet: '2024-10-20',
+      accepted: false,
+      setters: [
+        'Joey Jepsen',
+        'Olof Wood',
+        'Taylor Carpenter',
+        'Max Calderon',
+        'Austin Scott',
+        'Ryan Ford',
+      ],
+    },
+  ]);
 
   return (
     <ThemeProvider>

@@ -1,3 +1,4 @@
+// screens/HomeScreen.js
 import React, { useState } from 'react';
 import {
   View,
@@ -10,7 +11,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { useThemeContext } from '../context/ThemeContext';
-import { useNavigation } from '@react-navigation/native'; // ✅ Add this
+import { useNavigation } from '@react-navigation/native';
 
 const Home = ({ routes, setRoutes }) => {
   const [search, setSearch] = useState('');
@@ -22,7 +23,7 @@ const Home = ({ routes, setRoutes }) => {
   });
 
   const { isDark } = useThemeContext();
-  const navigation = useNavigation(); // ✅ Get navigation object
+  const navigation = useNavigation();
 
   const handleAddRoute = () => {
     const route = {
@@ -98,6 +99,9 @@ const Home = ({ routes, setRoutes }) => {
     }
   });
 
+ 
+  console.log('Routes in HomeScreen:', routes);
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -112,16 +116,20 @@ const Home = ({ routes, setRoutes }) => {
 
       <FlatList
         data={routes.filter(route =>
-          route.name.toLowerCase().includes(search.toLowerCase())
+          route.name?.toLowerCase().includes(search.toLowerCase())
         )}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.routeCard}
-            onPress={() => navigation.navigate('CourseDetail', { course: item })} // ✅ Tap navigation
+            onPress={() => navigation.navigate('CourseDetail', { course: item })}
           >
             <Text style={styles.routeTitle}>{item.name}</Text>
-            {item.city && <Text style={{ color: isDark ? '#ccc' : '#333' }}>{item.city}, {item.state}</Text>}
+            {item.city && (
+              <Text style={{ color: isDark ? '#ccc' : '#333' }}>
+                {item.city}, {item.state}
+              </Text>
+            )}
           </TouchableOpacity>
         )}
       />
