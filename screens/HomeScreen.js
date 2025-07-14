@@ -100,7 +100,7 @@ const Home = ({ routes, setRoutes }) => {
   });
 
  
-  console.log('Routes in HomeScreen:', routes);
+  //console.log('Routes in HomeScreen:', routes);
 
   return (
     <View style={styles.container}>

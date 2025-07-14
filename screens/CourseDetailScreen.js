@@ -58,16 +58,26 @@ const CourseDetailScreen = ({ route, navigation }) => {
 
   return (
     <ScrollView style={[styles.container, { backgroundColor }]}>
-      
       {youtubeIds.length > 0 && (
-        <View style={{ marginVertical: 10 }}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.mediaGallery}>
-            {youtubeIds.map((id, index) => (
-              <YouTubeVideoPlayer key={index} videoId={id} />
-            ))}
-          </ScrollView>
-        </View>
-      )}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontalVideoList}
+        >
+          {youtubeIds.map((id, index) => (
+            <View
+              key={index}
+              style={[
+                styles.horizontalVideoItem,
+                index === youtubeIds.length - 1 && { marginRight: 0 }
+    ]}
+            >
+            <YouTubeVideoPlayer videoId={id} />
+          </View>
+))}
+
+  </ScrollView>
+)}
 
       <View style={styles.centeredBlock}>
         <Text style={themedStyles.centeredText}>Coordinates:</Text>
@@ -149,9 +159,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  mediaGallery: {
-    height: 220,
-    paddingHorizontal: 10
+  verticalVideoList: {
+    alignItems: 'center',
+    marginVertical: 10
+  },
+  videoItem: {
+    marginVertical: 24 // controls vertical spacing between each video
+  },
+  horizontalVideoList: {
+    paddingHorizontal: 10,
+    paddingVertical: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  horizontalVideoItem: {
+    marginRight: 16
   },
   centeredBlock: {
     alignItems: 'center',
