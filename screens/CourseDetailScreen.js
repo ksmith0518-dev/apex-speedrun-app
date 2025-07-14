@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useThemeContext } from '../context/ThemeContext';
 import MapView, { Marker } from 'react-native-maps';
+import YouTubeVideoPlayer from '../components/YouTubeVideoPlayer';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -12,7 +13,7 @@ const darkMapStyle = [
   { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
   { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
   { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#38414e' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] }
 ];
 
 const CourseDetailScreen = ({ route, navigation }) => {
@@ -25,22 +26,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
   const themedStyles = {
     label: [styles.label, { color: textColor }],
     value: [styles.value, { color: textColor }],
-    centeredText: [styles.centeredText, { color: textColor }],
+    centeredText: [styles.centeredText, { color: textColor }]
   };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: course?.name || 'Course Details',
-      headerTitleAlign: 'center',
+      headerTitleAlign: 'center'
     });
   }, [navigation, course]);
 
   if (!course) {
     return (
       <View style={[styles.container, { backgroundColor }]}>
-        <Text style={[styles.title, { color: textColor }]}>
-          No course data provided.
-        </Text>
+        <Text style={[styles.title, { color: textColor }]}>No course data provided.</Text>
       </View>
     );
   }
@@ -51,26 +50,29 @@ const CourseDetailScreen = ({ route, navigation }) => {
     timeDiffSeconds, timeDiffPercent,
     lengthMeters, avgSpeed,
     location, dateSet, accepted, setters,
-    media = [], // image/video URIs
+    youtubeIds = []
   } = course;
+
+  const lat = location?.latitude || 0;
+  const lon = location?.longitude || 0;
 
   return (
     <ScrollView style={[styles.container, { backgroundColor }]}>
+      
+      {youtubeIds.length > 0 && (
+        <View style={{ marginVertical: 10 }}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.mediaGallery}>
+            {youtubeIds.map((id, index) => (
+              <YouTubeVideoPlayer key={index} videoId={id} />
+            ))}
+          </ScrollView>
+        </View>
+      )}
 
-      {/* Media Gallery */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.mediaGallery}>
-        {media.map((uri, index) => (
-          <Image
-            key={index}
-            source={{ uri }}
-            style={styles.mediaItem}
-            resizeMode="cover"
-          />
-        ))}
-      </ScrollView>
-
-      {/* Centered Info */}
       <View style={styles.centeredBlock}>
+        <Text style={themedStyles.centeredText}>Coordinates:</Text>
+        <Text style={themedStyles.centeredText}>{lat}, {lon}</Text>
+
         <Text style={themedStyles.centeredText}>Course ID:</Text>
         <Text style={themedStyles.centeredText}>{id}</Text>
 
@@ -83,25 +85,20 @@ const CourseDetailScreen = ({ route, navigation }) => {
         <Text style={themedStyles.centeredText}>Location:</Text>
         <Text style={themedStyles.centeredText}>{city}, {state}, {country}</Text>
 
-        <Text style={themedStyles.centeredText}>Coordinates:</Text>
-        <Text style={themedStyles.centeredText}>{location?.latitude}, {location?.longitude}</Text>
-
-        {/* Map Display */}
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: location?.latitude || 0,
-            longitude: location?.longitude || 0,
+            latitude: lat,
+            longitude: lon,
             latitudeDelta: 0.005,
-            longitudeDelta: 0.005,
+            longitudeDelta: 0.005
           }}
           customMapStyle={isDark ? darkMapStyle : []}
         >
-          <Marker coordinate={location} />
+          <Marker coordinate={{ latitude: lat, longitude: lon }} />
         </MapView>
       </View>
 
-      {/* Top Performers */}
       <View style={styles.row}>
         <View style={styles.column}>
           <Text style={themedStyles.label}>Top Male:</Text>
@@ -117,7 +114,6 @@ const CourseDetailScreen = ({ route, navigation }) => {
         </View>
       </View>
 
-      {/* Stats */}
       <View style={styles.row}>
         <View style={styles.column}>
           <Text style={themedStyles.label}>± Deviation:</Text>
@@ -135,7 +131,6 @@ const CourseDetailScreen = ({ route, navigation }) => {
         </View>
       </View>
 
-      {/* Setters and Accepted */}
       <View style={styles.row}>
         <View style={styles.column}>
           <Text style={themedStyles.label}>Accepted:</Text>
@@ -146,59 +141,57 @@ const CourseDetailScreen = ({ route, navigation }) => {
           <Text style={themedStyles.value}>{setters?.join(', ')}</Text>
         </View>
       </View>
-
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   mediaGallery: {
-    height: 200,
-    marginBottom: 15,
-  },
-  mediaItem: {
-    width: screenWidth * 0.8,
-    height: 200,
-    borderRadius: 12,
-    marginHorizontal: 10,
+    height: 220,
+    paddingHorizontal: 10
   },
   centeredBlock: {
     alignItems: 'center',
     marginBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
   map: {
     width: screenWidth * 0.9,
     height: 200,
     borderRadius: 10,
-    marginTop: 15,
+    marginTop: 15
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 20,
-    marginBottom: 20,
+    marginBottom: 20
   },
   column: {
-    width: '48%',
+    width: '48%'
   },
   label: {
     fontWeight: '600',
     fontSize: 16,
-    marginBottom: 2,
+    marginBottom: 2
   },
   value: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 8
   },
   centeredText: {
     textAlign: 'center',
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 8
   },
+  title: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginTop: 40
+  }
 });
 
 export default CourseDetailScreen;

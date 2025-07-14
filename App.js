@@ -115,6 +115,10 @@ export default function App() {
         'Austin Scott',
         'Ryan Ford',
       ],
+      youtubeIds: [
+        'L_hzTq3i8p8', // Joey's record run
+        'lrn75iIBnYs', // Taylor's record run
+      ],
     },
   ]);
 
